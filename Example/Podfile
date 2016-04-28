@@ -1,0 +1,8 @@
+use_frameworks!
+
+
+target 'ELBibles_Tests', :exclusive => true do
+  pod 'ELBibles', :path => '../'
+
+  
+end

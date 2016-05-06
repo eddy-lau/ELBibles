@@ -125,7 +125,7 @@ NSString *BibleModelDidLoadBooksNotification = @"BibleModelDidLoadBooksNotificat
         NSInteger chapterCount = [[row valueForKey:@"chaptercount"] integerValue];
         NSInteger number = [[row valueForKey:@"number"] integerValue];
         
-        BibleBook *book = [[BibleBook alloc] initWithName:name abbreviation:abbreviation number:number chapterCount:chapterCount];
+        BibleBook *book = [[BibleBook alloc] initWithBible:self name:name abbreviation:abbreviation number:number chapterCount:chapterCount];
         [_bibleBooks addObject:book];
         
         if ([name isEqualToString:@"創世記"]) {

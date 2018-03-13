@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ELBibles"
-  s.version          = "1.0.0"
+  s.version          = "1.0.1"
   s.summary          = "ELBibles models a set of Holy Bibles."
   s.description      = <<-DESC
 ELBibles models the Holy Bibles as Objective C objects

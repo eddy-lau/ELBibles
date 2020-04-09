@@ -1,0 +1,23 @@
+PODS:
+  - ELBibles (1.0.2):
+    - SQLiteDatabase
+  - SQLiteDatabase (1.0.0)
+
+DEPENDENCIES:
+  - ELBibles (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SQLiteDatabase
+
+EXTERNAL SOURCES:
+  ELBibles:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ELBibles: 3cfed4d6fc807ac9d04424ef2bd1c14d5f9f5b0d
+  SQLiteDatabase: ff3ab0221abd0a32ad51ebeba007e9673afb63bc
+
+PODFILE CHECKSUM: 8922f6fe20fa952980d18f5daec16ec07343f09e
+
+COCOAPODS: 1.5.3

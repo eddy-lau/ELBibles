@@ -1,8 +1,7 @@
 use_frameworks!
 
 
-target 'ELBibles_Tests', :exclusive => true do
+target 'ELBibles_Tests' do
   pod 'ELBibles', :path => '../'
 
-  
 end

@@ -42,11 +42,17 @@ NSString *BibleModelDidLoadBooksNotification = @"BibleModelDidLoadBooksNotificat
             
             NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:dbFileName];
             
-            self.db = [[SQLiteDatabase alloc] initWithPath:path];
-            if (![self.db open]) {
+            BOOL dbOpened = NO;
+            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                self.db = [[SQLiteDatabase alloc] initWithPath:path];
+                dbOpened = [self.db open];
+            }
+            
+            if (!dbOpened) {
                 
                 NSLog (@"Cannot open database: %@", path);
                 self.db = nil;
+                [self loadFromJson];
                 
             } else {
                 
@@ -70,6 +76,50 @@ NSString *BibleModelDidLoadBooksNotification = @"BibleModelDidLoadBooksNotificat
     self.name = nil;
     [self.db close];
     self.db = nil;
+    
+}
+    
+- (void) loadFromJson {
+    
+    NSBundle *bundle = [NSBundle bundleForClass:[Bible class]];
+    if (!bundle) {
+        return;
+    }
+    
+    NSString *resourcePath = [bundle pathForResource:@"ELBibles" ofType:@"bundle"];
+    if (!resourcePath) {
+        return;
+    }
+    
+    NSBundle *resBundle = [NSBundle bundleWithPath:resourcePath];
+    if (!resBundle) {
+        return;
+    }
+    
+    NSString *jsonPath = [resBundle pathForResource:@"和合本修訂版（繁體）" ofType:@"json"];
+    if (!jsonPath) {
+        return;
+    }
+    
+    NSData *data = [NSData dataWithContentsOfFile:jsonPath];
+    if (!data) {
+        return;
+    }
+    
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    if (!json) {
+        return;
+    }
+    
+    self.pageCount = [json[@"pageCount"] intValue];
+    
+    NSArray *dicts = json[@"sections"];
+    NSMutableArray *sections = [NSMutableArray array];
+    for (NSDictionary *dict in dicts) {
+        BibleSection *section = [[BibleSection alloc] initWithBible:self dictionary:dict];
+        [sections addObject:section];
+    }
+    _sections = sections;
     
 }
 
@@ -213,6 +263,25 @@ NSString *BibleModelDidLoadBooksNotification = @"BibleModelDidLoadBooksNotificat
     [self.name isEqualToString:@"現代中文譯本（繁體）"] ||
     [self.name isEqualToString:@"新標點和合本（繁體）"] ||
     [self.name isEqualToString:@"新标点和合本（简体）"];
+}
+
+- (NSString *) description {
+    
+    NSMutableString *string = [NSMutableString string];
+    [string appendString:@"{\n"];
+    [string appendFormat:@"  \"name\":      \"%@\", \n", self.name];
+    [string appendFormat:@"  \"pageCount\": %ld, \n", self.pageCount];
+    [string appendFormat:@"  \"isChinese\": %d, \n", self.isChinese];
+    [string appendString:@"  \"sections\": [\n"];
+
+    for (BibleSection *section in self.sections) {
+        [string appendFormat:@"%@, \n", section.description];
+    }
+
+    [string appendString:@"  ] \n"];
+    [string appendString:@"}\n"];
+    return string;
+
 }
 
 @end

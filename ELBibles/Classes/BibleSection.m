@@ -7,6 +7,7 @@
 //
 
 #import "BibleSection.h"
+#import "BibleBook.h"
 
 @interface BibleSection()
 
@@ -16,6 +17,22 @@
 @end
 
 @implementation BibleSection
+
+- (instancetype) initWithBible:(Bible *)bible dictionary:(NSDictionary *)dict {
+    self = [super init];
+    if (self) {
+        self.name = dict[@"name"];
+        
+        NSMutableArray *_books = [NSMutableArray array];
+        NSArray *books = dict[@"books"];
+        for (NSDictionary *dict in books) {
+            BibleBook *book = [[BibleBook alloc] initWithBible:bible dictionary:dict];
+            [_books addObject:book];
+        }
+        self.books = _books;
+    }
+    return self;
+}
 
 - (id) initWithName:(NSString *)name books:(NSArray *)books {
     
@@ -31,6 +48,20 @@
 - (void) dealloc {
     self.name = nil;
     self.books = nil;
+}
+
+- (NSString *) description {
+    NSMutableString *string = [NSMutableString string];
+    [string appendString:@"    {\n"];
+    [string appendString:@"      \"books\": [\n"];
+
+    for (BibleBook *book in self.books) {
+        [string appendFormat:@"%@, \n", book.description];
+    }
+
+    [string appendString:@"      ] \n"];
+    [string appendString:@"    }"];
+    return string;
 }
 
 @end

@@ -18,6 +18,7 @@
 
 
 - (instancetype) initWithBible:(Bible *)bible name:(NSString *)name abbreviation:(NSString *)abbreviation number:(NSInteger)number chapterCount:(NSInteger)chapterCount;
+- (instancetype) initWithBible:(Bible *)bible dictionary:(NSDictionary *)dict;
 - (NSInteger) numberOfVersesInChapter:(NSUInteger)chapter;
 
 // Deprecated

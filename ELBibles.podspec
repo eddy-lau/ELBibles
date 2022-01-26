@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ELBibles"
-  s.version          = "1.0.2"
+  s.version          = "1.1.0"
   s.summary          = "ELBibles models a set of Holy Bibles."
   s.description      = <<-DESC
 ELBibles models the Holy Bibles as Objective C objects
@@ -14,8 +14,8 @@ DESC
   s.public_header_files = 'ELBibles/Classes/*.h'
   s.private_header_files = 'ELBibles/Classes/BibleDBFile.h'
 
-#  s.resource_bundles = {
-#    'ELBibles' => ['ELBibles/Assets/*.png']
-#  }
+  s.resource_bundles = {
+    'ELBibles' => ['ELBibles/Assets/**/*']
+  }
   s.dependency 'SQLiteDatabase'
 end
